@@ -1,19 +1,19 @@
 {
-  "name": "n8n-nodes-<...>",
+  "name": "n8n-server",
   "version": "0.1.0",
-  "description": "",
+  "description": "...",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://thanachon.me",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "thasup",
+    "email": "thanachonfirst@hotmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/thasup/n8n-server.git"
   },
   "engines": {
     "node": ">=20.15"
@@ -22,6 +22,7 @@
   "scripts": {
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
+    "start": "n8n start",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
