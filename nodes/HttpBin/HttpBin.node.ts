@@ -1,4 +1,8 @@
-import { INodeType, INodeTypeDescription, NodeConnectionType } from 'n8n-workflow';
+import {
+	INodeType,
+	INodeTypeDescription,
+	NodeConnectionType,
+} from 'n8n-workflow';
 import { httpVerbFields, httpVerbOperations } from './HttpVerbDescription';
 
 export class HttpBin implements INodeType {

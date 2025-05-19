@@ -3,8 +3,8 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	NodeConnectionType,
 	NodeOperationError,
+	NodeConnectionType,
 } from 'n8n-workflow';
 
 export class ExampleNode implements INodeType {
