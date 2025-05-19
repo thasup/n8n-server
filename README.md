@@ -4,6 +4,39 @@
 
 This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
 
+## Deployment on Render
+
+### Prerequisites
+- Ensure you have a Render account
+- Node.js version 20.15 or higher
+
+### Deployment Steps
+1. Fork this repository
+2. Create a new Web Service on Render
+3. Connect your GitHub repository
+4. Configure the following settings:
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+   - **Runtime**: Node
+   - **Node Version**: 20.15.0
+
+### Build Process Details
+The build command `npm run build` executes two key steps:
+- `tsc`: Compiles TypeScript files to JavaScript
+- `gulp build:icons`: Builds project icons
+
+### Environment Variables
+Set the following environment variables in your Render dashboard:
+- `NODE_VERSION`: 20.15.0
+- Add any additional credentials required by your n8n nodes
+
+### Troubleshooting
+- Ensure all dependencies are correctly listed in `package.json`
+- Check that the build and start scripts are properly configured
+- Verify that environment variables are correctly set
+
+## Original Starter Guide
+
 To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
 
 ## Prerequisites
@@ -20,45 +53,4 @@ You need the following installed on your development machine:
 
 ## Using this starter
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
-
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm lint` to check for errors or `npm lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
-
-## More information
-
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
-
-## Credential Management
-
-### Local Development
-1. Copy `.env.example` to `.env`
-2. Replace placeholder values with your actual credentials
-3. NEVER commit `.env` to version control
-
-### Production Deployment
-1. Set environment variables in your deployment platform (e.g., Render)
-2. Use the `.env.example` as a template for required credentials
-3. Ensure sensitive information is not hardcoded
-
-### Security Best Practices
-- Use environment variables for sensitive information
-- Rotate credentials regularly
-- Limit access to credential files
-- Never expose credentials in public repositories
-
-## License
-
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+These are the basic steps for working with the starter. For detailed guidance on creating nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).

@@ -1,17 +1,15 @@
-require('dotenv').config();
+const { execSync } = require('child_process');
 
-// Validate required environment variables
-const requiredEnvs = ['HTTPBIN_API_TOKEN', 'HTTPBIN_DOMAIN'];
-const missingEnvs = requiredEnvs.filter(env => !process.env[env]);
-
-if (missingEnvs.length > 0) {
-  console.error('Missing required environment variables:', missingEnvs);
-  console.error('Please check your .env file or set the environment variables.');
-  process.exit(1);
+async function startN8n() {
+  try {
+    // Run n8n with production settings
+    execSync('npx n8n start --tunnel=false --production', {
+      stdio: 'inherit'
+    });
+  } catch (error) {
+    console.error('Failed to start n8n:', error);
+    process.exit(1);
+  }
 }
 
-// Export the validated environment configuration
-module.exports = {
-  httpbinApiToken: process.env.HTTPBIN_API_TOKEN,
-  httpbinDomain: process.env.HTTPBIN_DOMAIN,
-};
+startN8n();
