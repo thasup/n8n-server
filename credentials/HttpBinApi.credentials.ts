@@ -5,6 +5,13 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
+declare const process: {
+	env: {
+		HTTPBIN_API_TOKEN?: string;
+		HTTPBIN_DOMAIN?: string;
+	}
+};
+
 export class HttpBinApi implements ICredentialType {
 	name = 'httpbinApi';
 	displayName = 'HttpBin API';
@@ -14,23 +21,21 @@ export class HttpBinApi implements ICredentialType {
 			displayName: 'Token',
 			name: 'token',
 			type: 'string',
-			default: '',
+			default: process.env.HTTPBIN_API_TOKEN || '',
 			typeOptions: {
 				password: true,
-			}
+			},
+			description: 'Set via HTTPBIN_API_TOKEN environment variable',
 		},
 		{
 			displayName: 'Domain',
 			name: 'domain',
 			type: 'string',
-			default: 'https://httpbin.org',
+			default: process.env.HTTPBIN_DOMAIN || 'https://httpbin.org',
+			description: 'Override with HTTPBIN_DOMAIN environment variable',
 		},
 	];
 
-	// This allows the credential to be used by other parts of n8n
-	// stating how this credential is injected as part of the request
-	// An example is the Http Request node that can make generic calls
-	// reusing this credential
 	authenticate: IAuthenticateGeneric = {
 		type: 'generic',
 		properties: {
@@ -40,7 +45,6 @@ export class HttpBinApi implements ICredentialType {
 		},
 	};
 
-	// The block below tells how this credential can be tested
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: '={{$credentials?.domain}}',

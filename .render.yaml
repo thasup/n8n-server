@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: n8n-server
+    runtime: node
+    region: virginia
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HTTPBIN_API_TOKEN
+        sync: false
+      - key: HTTPBIN_DOMAIN
+        value: https://httpbin.org
+        sync: false
+    plan: free

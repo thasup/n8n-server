@@ -1,10 +1,11 @@
-import type {
+import {
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	NodeConnectionType,
+	NodeOperationError,
 } from 'n8n-workflow';
-import { NodeConnectionType, NodeOperationError } from 'n8n-workflow';
 
 export class ExampleNode implements INodeType {
 	description: INodeTypeDescription = {
@@ -20,8 +21,6 @@ export class ExampleNode implements INodeType {
 		outputs: [NodeConnectionType.Main],
 		usableAsTool: true,
 		properties: [
-			// Node properties which the user gets displayed and
-			// can change on the node.
 			{
 				displayName: 'My String',
 				name: 'myString',
@@ -33,45 +32,53 @@ export class ExampleNode implements INodeType {
 		],
 	};
 
-	// The function below is responsible for actually doing whatever this node
-	// is supposed to do. In this case, we're just appending the `myString` property
-	// with whatever the user has entered.
-	// You can make async calls and use `await`.
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
+		const returnItems: INodeExecutionData[] = [];
 
-		let item: INodeExecutionData;
-		let myString: string;
-
-		// Iterates over all input items and add the key "myString" with the
-		// value the parameter "myString" resolves to.
-		// (This could be a different value for each item in case it contains an expression)
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
-				myString = this.getNodeParameter('myString', itemIndex, '') as string;
-				item = items[itemIndex];
+				// Safely get the myString parameter with a default empty string
+				const myString = this.getNodeParameter('myString', itemIndex, '') as string;
 
+				// Clone the current item to avoid mutating the original
+				const item: INodeExecutionData = { ...items[itemIndex] };
+
+				// Add myString to the item's JSON
 				item.json.myString = myString;
-			} catch (error) {
-				// This node should never fail but we want to showcase how
-				// to handle errors.
-				if (this.continueOnFail()) {
-					items.push({ json: this.getInputData(itemIndex)[0].json, error, pairedItem: itemIndex });
-				} else {
-					// Adding `itemIndex` allows other workflows to handle this error
-					if (error.context) {
-						// If the error thrown already contains the context property,
-						// only append the itemIndex
-						error.context.itemIndex = itemIndex;
-						throw error;
-					}
-					throw new NodeOperationError(this.getNode(), error, {
+
+				returnItems.push(item);
+			} catch (error: unknown) {
+				// Determine the most appropriate error message
+				const errorMessage = error instanceof Error
+					? error.message
+					: error && typeof error === 'object' && 'message' in error
+					? String((error as any).message)
+					: 'An unexpected error occurred';
+
+				// Create a NodeOperationError
+				const nodeError = new NodeOperationError(
+					{} as any,
+					new Error(errorMessage),
+					{
 						itemIndex,
+						description: errorMessage
+					}
+				);
+
+				// Handle error based on continueOnFail
+				if (this.continueOnFail()) {
+					returnItems.push({
+						json: {},
+						error: nodeError,
+						pairedItem: itemIndex
 					});
+				} else {
+					throw nodeError;
 				}
 			}
 		}
 
-		return [items];
+		return [returnItems];
 	}
 }

@@ -41,6 +41,24 @@ These are the basic steps for working with the starter. For detailed guidance on
 
 Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
 
+## Credential Management
+
+### Local Development
+1. Copy `.env.example` to `.env`
+2. Replace placeholder values with your actual credentials
+3. NEVER commit `.env` to version control
+
+### Production Deployment
+1. Set environment variables in your deployment platform (e.g., Render)
+2. Use the `.env.example` as a template for required credentials
+3. Ensure sensitive information is not hardcoded
+
+### Security Best Practices
+- Use environment variables for sensitive information
+- Rotate credentials regularly
+- Limit access to credential files
+- Never expose credentials in public repositories
+
 ## License
 
 [MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
