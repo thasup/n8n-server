@@ -15,8 +15,8 @@ class HttpBin {
             defaults: {
                 name: 'HttpBin',
             },
-            inputs: ["main" /* NodeConnectionType.Main */],
-            outputs: ["main" /* NodeConnectionType.Main */],
+            inputs: ["main"],
+            outputs: ["main"],
             credentials: [
                 {
                     name: 'httpbinApi',

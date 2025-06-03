@@ -13,8 +13,8 @@ class ExampleNode {
             defaults: {
                 name: 'Example Node',
             },
-            inputs: ["main" /* NodeConnectionType.Main */],
-            outputs: ["main" /* NodeConnectionType.Main */],
+            inputs: [n8n_workflow_1.NodeConnectionType.Main],
+            outputs: [n8n_workflow_1.NodeConnectionType.Main],
             usableAsTool: true,
             properties: [
                 {
